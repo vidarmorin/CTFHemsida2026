@@ -121,3 +121,10 @@ body {
             height: 300px;
             margin-top: 20px;
         }
+        .locationCluster {
+            margin-left: 20px;
+            display: inline-block;
+        }
+        .locationState {
+            margin-left: 20px;
+        }
