@@ -217,3 +217,14 @@ body {
             cursor: pointer;
             width: 200px;
         }
+        .loginform {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+        }
+        .logininput {
+            margin: 5px;
+            padding: 10px;
+            width: 200px;
+            border: 2px #e6201c solid;
+        }

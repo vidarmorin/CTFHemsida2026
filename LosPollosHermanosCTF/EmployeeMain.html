@@ -25,10 +25,46 @@
             <input type="text" id="search" name="search" placeholder="Search for a state...">
             <input type="submit" value="Search" onclick="searchState(); return false;">
             <div>
-          <script>
-            firstnames = ["John", "Jane", "Michael", "Emily", "David", "Sarah", "Chris", "Jessica", "Daniel", "Ashley", "James", "Amanda", "Robert", "Jennifer", "Joseph", "Elizabeth", "Matthew", "Megan", "Andrew", "Lauren"]
-            lastnames = ["Smith", "Johnson", "Brown", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall"]
-            locations = {
+        <button id="fetchdata">Fetch and show</button>
+
+        
+          <script type="module">
+            import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        const SUPABASE_URL      = 'https://akwhlkqlyjchisztszhq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrd2hsa3FseWpjaGlzenRzemhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyNjM0NTAsImV4cCI6MjA4NTgzOTQ1MH0.-p1AtNWTg8EewcB2zpHeEujPbiHkyqMX13x-FDNTNTQ';
+        const supabase          = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const main = document.getElementsByClassName("main")[0];
+        const fetchButton = document.getElementById("fetchdata");
+        fetchButton.addEventListener("click", fetchAndShow);
+
+
+
+
+
+      
+        async function fetchAndShow() {
+
+          const { data, error } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('user', 'Gustavo Fring');
+          if (error) return alert(error.message);
+
+          let cards = data.map((user) => `
+            <div class="card">
+              <h2>${user.user}</h2>
+              <p>${user.password}</p>
+            </div>
+          `).join('');
+          document.getElementsByClassName("main")[0].innerHTML = cards;
+          main.append(cards);
+        
+        }
+            
+            let firstnames = ["John", "Jane", "Michael", "Emily", "David", "Sarah", "Chris", "Jessica", "Daniel", "Ashley", "James", "Amanda", "Robert", "Jennifer", "Joseph", "Elizabeth", "Matthew", "Megan", "Andrew", "Lauren"]
+            let lastnames = ["Smith", "Johnson", "Brown", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall"]
+            let locations = {
   "New_York": [
     "New York",
     "Buffalo",
@@ -1158,11 +1194,16 @@
               var empButton = document.createElement("button");
               empButton.className = "employeebtn";
               empButton.innerHTML = empName;
+              empButton.addEventListener("click", (e) => { loginWindow(e.target.textContent); });
+                
+              
               main.append(empButton);
 
               }
               empButton.innerHTML = "Gustavo Fring";
+              
               main.append(empButton);
+
             }
             else {
               for (i = 0; i < 10; i++) {
@@ -1170,11 +1211,39 @@
               var empButton = document.createElement("button");
               empButton.className = "employeebtn";
               empButton.innerHTML = empName;
+              empButton.addEventListener("click", (e) => { alert("Employee Profile: " + e.target.textContent); });
               main.append(empButton);
 
               }
             }
+            function loginWindow(name) {
+              var main = document.getElementsByClassName("main")[0];
+              while (main.firstChild) {
+                main.removeChild(main.firstChild);
+              }
+              var x = document.createElement("form");
+              x.className = "loginform";
+              var username = document.createElement("input");
+              username.type = "text";
+              username.className = "logininput";
+              username.placeholder = "Username";
+              x.append(username);
+              var password = document.createElement("input");
+              password.type = "password";
+              password.placeholder = "Password";
+              password.className = "logininput";
+              x.append(password);
+              var y = document.createElement("p");
+              y.innerHTML = "Position: Manager";
+              x.append(y);
+              var z = document.createElement("p");
+              z.innerHTML = "Location: Albuquerque, New Mexico";
+              x.append(z);
+              main.append(x);
         }
+      }
+
+      
           </script>
           <a title="locations"></a>
         </div>
