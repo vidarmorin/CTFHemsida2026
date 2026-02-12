@@ -14,6 +14,7 @@
         <button class="header_button">Reviews</button>
     </div>
     <div id="redline"></div>
+    <button id="fetchdata">Fetch Employee Data</button>
 
     
 
@@ -25,7 +26,6 @@
             <input type="text" id="search" name="search" placeholder="Search for a state...">
             <input type="submit" value="Search" onclick="searchState(); return false;">
             <div>
-        <button id="fetchdata">Fetch and show</button>
 
         
           <script type="module">
@@ -43,24 +43,28 @@
 
 
       
-        async function fetchAndShow() {
+        async function fetchAndShow(event) {
+          event.preventDefault();
 
           const { data, error } = await supabase
             .from('Users')
             .select('*')
             .eq('user', 'Gustavo Fring');
-          if (error) return alert(error.message);
 
-          let cards = data.map((user) => `
-            <div class="card">
-              <h2>${user.user}</h2>
-              <p>${user.password}</p>
-            </div>
-          `).join('');
-          document.getElementsByClassName("main")[0].innerHTML = cards;
-          main.append(cards);
+            console.log("Employee Profile: " + data[0].user + "\nEmail: " + data[0].mail + "\nPassword: " + data[0].password);
+          
         
         }
+
+        async function login(mail, pass) {
+          const currentuser = document.getElementsByClassName("logininput")[0].value;
+          const { data, error } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('user', currentuser);
+        }
+        </script>
+        <script>
             
             let firstnames = ["John", "Jane", "Michael", "Emily", "David", "Sarah", "Chris", "Jessica", "Daniel", "Ashley", "James", "Amanda", "Robert", "Jennifer", "Joseph", "Elizabeth", "Matthew", "Megan", "Andrew", "Lauren"]
             let lastnames = ["Smith", "Johnson", "Brown", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall"]
@@ -1221,18 +1225,29 @@
               while (main.firstChild) {
                 main.removeChild(main.firstChild);
               }
+              var z = document.createElement("h3");
+              z.innerHTML = name;
+              z.className = "logininput";
+              main.append(z);
               var x = document.createElement("form");
               x.className = "loginform";
               var username = document.createElement("input");
               username.type = "text";
               username.className = "logininput";
-              username.placeholder = "Username";
+              username.placeholder = "Email";
+              var mail = username.value;
               x.append(username);
               var password = document.createElement("input");
               password.type = "password";
               password.placeholder = "Password";
               password.className = "logininput";
+              var pass = password.value;
               x.append(password);
+              var submit = document.createElement("button");
+              submit.type = "button";
+              submit.innerHTML = "Login";
+              x.addEventListener("click", async (e) => {login(mail, pass), event.preventDefault();});
+              x.append(submit);
               var y = document.createElement("p");
               y.innerHTML = "Position: Manager";
               x.append(y);
