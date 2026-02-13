@@ -24,11 +24,11 @@
         <form>
             <label for="search">Your_State</label>
             <input type="text" id="search" name="search" placeholder="Search for a state...">
-            <input type="submit" value="Search" onclick="searchState(); return false;">
+            <input type="submit" value="Search" onclick="event.preventDefault();">
             <div>
 
         
-          <script type="module">
+          <script id="mod" type="module">
             import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
         const SUPABASE_URL      = 'https://akwhlkqlyjchisztszhq.supabase.co';
@@ -37,38 +37,9 @@
         const main = document.getElementsByClassName("main")[0];
         const fetchButton = document.getElementById("fetchdata");
         fetchButton.addEventListener("click", fetchAndShow);
-
-
-
-
-
-      
-        async function fetchAndShow(event) {
-          event.preventDefault();
-
-          const { data, error } = await supabase
-            .from('Users')
-            .select('*')
-            .eq('user', 'Gustavo Fring');
-
-            console.log("Employee Profile: " + data[0].user + "\nEmail: " + data[0].mail + "\nPassword: " + data[0].password);
-          
-        
-        }
-
-        async function login(mail, pass) {
-          const currentuser = document.getElementsByClassName("logininput")[0].value;
-          const { data, error } = await supabase
-            .from('Users')
-            .select('*')
-            .eq('user', currentuser);
-        }
-        </script>
-        <script>
-            
-            let firstnames = ["John", "Jane", "Michael", "Emily", "David", "Sarah", "Chris", "Jessica", "Daniel", "Ashley", "James", "Amanda", "Robert", "Jennifer", "Joseph", "Elizabeth", "Matthew", "Megan", "Andrew", "Lauren"]
-            let lastnames = ["Smith", "Johnson", "Brown", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall"]
-            let locations = {
+        let firstnames = ["John", "Jane", "Michael", "Emily", "David", "Sarah", "Chris", "Jessica", "Daniel", "Ashley", "James", "Amanda", "Robert", "Jennifer", "Joseph", "Elizabeth", "Matthew", "Megan", "Andrew", "Lauren"]
+        let lastnames = ["Smith", "Johnson", "Brown", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall"]
+        let locations = {
   "New_York": [
     "New York",
     "Buffalo",
@@ -1172,9 +1143,65 @@
     "Burlington"
   ]
 }
-            function searchState() {
+            
+        
+        
+        var searchfunction = document.getElementById("search")
+        searchfunction.addEventListener("keypress", function(event) {
+        var a = locations[searchfunction.value];
+        console.log(a);
+          if (event.key === "Enter") {
+            event.preventDefault();
+            var a = locations[searchfunction.value];
+            var main = document.getElementsByClassName("main")[0];
+              for (let i in a) {
+                var x = document.createElement("button");  // Creates a new <button> node
+                x.className = "locationbtn";      // Sets the class
+                x.addEventListener("click", (e) => { clearLocations(e.target.textContent); });
+                x.innerHTML = a[i];         // Sets the text content
+                main.append(x);           // Adds to the document
+          }
+            
+          }
+        });
+
+
+
+      
+        async function fetchAndShow(event) {
+          event.preventDefault();
+          console.log(document.getElementById("search").value);
+          const { data, error } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('user', 'Gustavo Fring');
+
+          //console.log("Employee Profile: " + data[0].user + "\nEmail: " + data[0].mail + "\nPassword: " + data[0].password);
+          
+          window.addEventListener("DOMContentLoaded", () => {
+            const sub = document.getElementById("submitlogin")
+            console.log(sub);
+            sub.addEventListener("click", login);
+          });
+          
+        
+        }
+
+        async function login(mail, pass) {
+          console.log("Working so far");
+          const currentuser = document.getElementsByClassName("logininput")[0].value;
+          const { data, error } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('user', currentuser);
+          console.log("Attempting login with username: " + currentuser + "\nEmail: " + data[0].mail + "\nPassword: " + data[0].password);
+        }
+
+        
+            
+            async function searchState() {
               var main = document.getElementsByClassName("main")[0];
-              for (i in locations[document.getElementById("search").value]) {
+              for (let i in locations[document.getElementById("search").value]) {
                 var x = document.createElement("button");  // Creates a new <button> node
                 x.className = "locationbtn";      // Sets the class
                 x.addEventListener("click", (e) => { clearLocations(e.target.textContent); });
@@ -1193,7 +1220,7 @@
             main.append(x);
 
             if (city == "Albuquerque") {
-              for (i = 0; i < 9; i++) {
+              for (let i = 0; i < 9; i++) {
               var empName = firstnames[Math.floor(Math.random() * firstnames.length)] + " " + lastnames[Math.floor(Math.random() * lastnames.length)];
               var empButton = document.createElement("button");
               empButton.className = "employeebtn";
@@ -1210,7 +1237,7 @@
 
             }
             else {
-              for (i = 0; i < 10; i++) {
+              for (let i = 0; i < 10; i++) {
               var empName = firstnames[Math.floor(Math.random() * firstnames.length)] + " " + lastnames[Math.floor(Math.random() * lastnames.length)];
               var empButton = document.createElement("button");
               empButton.className = "employeebtn";
@@ -1245,8 +1272,9 @@
               x.append(password);
               var submit = document.createElement("button");
               submit.type = "button";
+              submit.id = "submitlogin";
               submit.innerHTML = "Login";
-              x.addEventListener("click", async (e) => {login(mail, pass), event.preventDefault();});
+              submit.addEventListener("click", () => { console.log("Attempting login for user: " + username.value + ", with password: " + password.value); });
               x.append(submit);
               var y = document.createElement("p");
               y.innerHTML = "Position: Manager";
@@ -1259,7 +1287,7 @@
       }
 
       
-          </script>
+        </script>
           <a title="locations"></a>
         </div>
         </form>
