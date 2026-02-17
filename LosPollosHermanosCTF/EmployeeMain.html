@@ -35,8 +35,6 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrd2hsa3FseWpjaGlzenRzemhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyNjM0NTAsImV4cCI6MjA4NTgzOTQ1MH0.-p1AtNWTg8EewcB2zpHeEujPbiHkyqMX13x-FDNTNTQ';
         const supabase          = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const main = document.getElementsByClassName("main")[0];
-        const fetchButton = document.getElementById("fetchdata");
-        fetchButton.addEventListener("click", fetchAndShow);
         let firstnames = ["John", "Jane", "Michael", "Emily", "David", "Sarah", "Chris", "Jessica", "Daniel", "Ashley", "James", "Amanda", "Robert", "Jennifer", "Joseph", "Elizabeth", "Matthew", "Megan", "Andrew", "Lauren"]
         let lastnames = ["Smith", "Johnson", "Brown", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall"]
         let locations = {
@@ -1145,7 +1143,6 @@
 }
             
         
-        
         var searchfunction = document.getElementById("search")
         searchfunction.addEventListener("keypress", function(event) {
         var a = locations[searchfunction.value];
@@ -1165,36 +1162,27 @@
           }
         });
 
-
-
-      
-        async function fetchAndShow(event) {
-          event.preventDefault();
-          console.log(document.getElementById("search").value);
-          const { data, error } = await supabase
-            .from('Users')
-            .select('*')
-            .eq('user', 'Gustavo Fring');
-
-          //console.log("Employee Profile: " + data[0].user + "\nEmail: " + data[0].mail + "\nPassword: " + data[0].password);
-          
-          window.addEventListener("DOMContentLoaded", () => {
-            const sub = document.getElementById("submitlogin")
-            console.log(sub);
-            sub.addEventListener("click", login);
-          });
-          
-        
-        }
-
-        async function login(mail, pass) {
+        async function login(currentuser, usrmail, pass) {
           console.log("Working so far");
-          const currentuser = document.getElementsByClassName("logininput")[0].value;
+          console.log("user:" + currentuser);
+          console.log("mail:" + usrmail);
+          console.log("password:" + pass);
           const { data, error } = await supabase
             .from('Users')
             .select('*')
             .eq('user', currentuser);
-          console.log("Attempting login with username: " + currentuser + "\nEmail: " + data[0].mail + "\nPassword: " + data[0].password);
+          console.log(decodeURIComponent(escape(window.atob(data[0].password))));
+          console.log(data[0].mail);
+          if (usrmail == data[0].mail) {
+            console.log("Email correct");
+          if (pass == decodeURIComponent(escape(window.atob(data[0].password)))) {
+              alert("Login successful! Welcome, " + currentuser + ".");
+            }
+          else {
+            console.log(pass);
+            console.log(decodeURIComponent(escape(window.atob(data[0].password))));
+            }
+          }
         }
 
         
@@ -1254,7 +1242,7 @@
               }
               var z = document.createElement("h3");
               z.innerHTML = name;
-              z.className = "logininput";
+              z.id = "logininput";
               main.append(z);
               var x = document.createElement("form");
               x.className = "loginform";
@@ -1274,7 +1262,7 @@
               submit.type = "button";
               submit.id = "submitlogin";
               submit.innerHTML = "Login";
-              submit.addEventListener("click", () => { console.log("Attempting login for user: " + username.value + ", with password: " + password.value); });
+              submit.addEventListener("click", () => { login(name, username.value, password.value); });
               x.append(submit);
               var y = document.createElement("p");
               y.innerHTML = "Position: Manager";
