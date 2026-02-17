@@ -14,7 +14,7 @@
         <button class="header_button">Reviews</button>
     </div>
     <div id="redline"></div>
-    <button id="fetchdata">Fetch Employee Data</button>
+    <!--<button id="fetchdata">Fetch Employee Data</button> -->
 
     
 
@@ -1171,19 +1171,15 @@
             .from('Users')
             .select('*')
             .eq('user', currentuser);
-          console.log(decodeURIComponent(escape(window.atob(data[0].password))));
-          console.log(data[0].mail);
-          if (usrmail == data[0].mail) {
+          if (usrmail == data[0].mail && pass == decodeURIComponent(escape(window.atob(data[0].password)))) {
             console.log("Email correct");
-          if (pass == decodeURIComponent(escape(window.atob(data[0].password)))) {
               alert("Login successful! Welcome, " + currentuser + ".");
-            }
+          }
           else {
-            console.log(pass);
-            console.log(decodeURIComponent(escape(window.atob(data[0].password))));
+            alert("Login failed. Please check your email and password and try again.");
             }
           }
-        }
+        
 
         
             

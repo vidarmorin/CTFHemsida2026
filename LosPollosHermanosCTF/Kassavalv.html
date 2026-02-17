@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="Kasavalv.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Page</title>
+    <link rel="stylesheet" href="Kassavalv.css">
+    <body class="kasavalvbody">
+        <img src="https://i.pinimg.com/originals/35/58/0d/35580d64b9b883fd0e0678595fc2aefd.gif" alt="" id="gif">
+        <div id="KasavalvImg"> <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fthumb_back%2Ffh260%2Fbackground%2F20230525%2Fpngtree-an-image-of-the-door-of-a-vault-image_2629001.jpg&f=1&nofb=1&ipt=3d6c05cca307f8a708103f5caea09a799c285d881f341bf79dd7a0607968fb2b" alt=""></div>
+     <form>
+        <label class="Text">Enter PIN:</label><br>
+            <input class="pin-input" type="password" maxlength="1">
+            <input class="pin-input" type="password" maxlength="1">
+            <input class="pin-input" type="password" maxlength="1">
+            <input class="pin-input" type="password" maxlength="1">
+        </form>
+    
+        <h1 class="WrongCode"></h1>
+    </body>
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+// Wait for the Supabase library to load
+window.addEventListener('load', function() {
+
+
+// Supabase credentials (replace with your actual credentials)
+const VITE_SUPABASE_URL="https://akwhlkqlyjchisztszhq.supabase.co";
+const VITE_SUPABASE_KEY="sb_publishable_8DKN8NvfAIa8ve_3eHQtGA_V5kexVtH";
+
+const supabase = window.supabase.createClient(
+  VITE_SUPABASE_URL,
+  VITE_SUPABASE_KEY
+);
+
+const correctPIN = '4810';
+
+const inputs = document.querySelectorAll('.pin-input');
+inputs[0].focus();
+
+inputs.forEach((input, idx) => {
+  input.addEventListener('input', (e) => {
+    const value = e.target.value;
+    if (value.length === 1 && idx < inputs.length - 1) {
+      inputs[idx + 1].focus();
+    }
+    checkPIN();
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' && !input.value && idx > 0) {
+      inputs[idx - 1].focus();
+    }
+  });
+});
+
+function checkPIN() {
+  let enteredPIN = '';
+  inputs.forEach(input => {
+    enteredPIN += input.value;
+  });
+  if (enteredPIN.length === inputs.length) {
+    if (enteredPIN === correctPIN) {
+      getFlag();
+    } else {
+      inputs.forEach(input => input.value = '');
+      inputs[0].focus();
+      document.querySelector('.WrongCode').textContent = "Wrong PIN, try again.";
+    }
+  }
+}
+
+
+// Supabase flag fetch function
+async function getFlag() {
+  const { data, error } = await supabase
+    .from('Flags')        // table name
+    .select('flag')      // select only the flag column
+    .eq('id', 'main');
+  console.log(data);
+
+  if (error) {
+    console.log("Error:", error);
+    alert('Error fetching flag: ' + error.message);
+    return;
+  }
+
+  if (data && data.length > 0) {
+    // Assuming the flag is in the first row
+    console.log("Flag:", data[0].flag);
+    alert(`Correct PIN! Here is your flag: ${data[0].flag}`);
+  } else {
+    console.log("No flag found.");
+    alert('No flag found.');
+  }
+}
+
+}); // End of load event
+</script>
