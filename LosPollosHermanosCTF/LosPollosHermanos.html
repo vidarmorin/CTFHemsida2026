@@ -66,8 +66,8 @@
             <img src="https://lospollosmerch.com/wp-content/uploads/2023/07/Los-Pollos-Merch-bg-2-1024x576.jpg" alt="Logo" width="200">
             <h1 id="WorkText">Want to work in the best Chicken restaurant in New Mexico?</h1>
             <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flaughingsquid.com%2Fwp-content%2Fuploads%2F2017%2F03%2Femployees.jpg%3Fw%3D750&f=1&nofb=1&ipt=50a4a062ada0d8a7eed433212ca0adfd39b2b8e8854781ea7b83a1d7ba7fdbf1%22 alt="" id="WorkImg">
-            <div id="ApplyDiv"><button id="ApplyButton" >Apply Now</button></div>
-            <div id="ApplyDiv"><button id="ApplyButton" onclick="CheckEmployee()">LogIn To Employee Account </button></div>
+            <div id="ApplyDiv"><button id="ApplyButton">Apply Now</button></div>
+            <div id="ApplyDiv"><button id="LoginButton">LogIn To Employee Account </button></div>
            
     </div>
  
@@ -91,7 +91,12 @@
  
 <script>
 
-UserIsEmployee = false;
+var UserIsEmployee = false;
+
+const logbtn = document.getElementById("LoginButton")
+logbtn.addEventListener("click", (event) => {
+    CheckEmployee(event);
+});
 
 window.addEventListener("scroll", () => {
     const scrollY = window.scrollY;
@@ -109,8 +114,9 @@ window.addEventListener("scroll", () => {
     `translateX(-${moveLeft}px)`;
 });
 
-function CheckEmployee() {
-    if (UserIsEmployee) {
+async function CheckEmployee(event) {
+    event.preventDefault();
+    if (UserIsEmployee == true) {
         window.location.href = "EmployeeMain.html";
     } else {
         alert("You are not an employee!");

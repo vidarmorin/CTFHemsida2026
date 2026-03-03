@@ -98,6 +98,13 @@ body {
             width: 200px;
             height: 100px;
         }
+        #LoginButton{
+            margin-top: -100px;
+            background-color: #f1db8c;
+            cursor: pointer;
+            width: 200px;
+            height: 100px;
+        }
         #ApplyDiv{
             margin-left: 60%;
             margin-top: -270px;
