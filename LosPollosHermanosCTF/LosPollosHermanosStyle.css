@@ -228,3 +228,48 @@ body {
             width: 200px;
             border: 2px #e6201c solid;
         }
+        .btext {
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10%;
+            background-color: blue;
+            color: white;
+            border: 5px solid black;
+        }
+        .atext {
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10%;
+            background-color: purple;
+            color: white;
+            border: 5px solid yellow;
+        }
+        .ctext {
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10%;
+            background-color: blue;
+            color: white;
+            border: 5px solid yellow;
+        }
+        .dtext {
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10%;
+            background-color: blue;
+            color: white;
+            border: 5px solid red;
+        }
+        .prices {
+            display: flex;
+            flex-direction: row;
+            align-items: left;
+        }

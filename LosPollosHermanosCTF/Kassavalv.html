@@ -74,7 +74,6 @@ async function loadCorrectPIN() {
     }
     // convert retrieved code to integer
     correctPIN = data && data.Code !== null ? parseInt(data.Code, 10) : NaN;
-    console.log("Correct PIN from Supabase (int):", correctPIN);
 }
  
 async function checkPIN() {
@@ -89,7 +88,20 @@ async function checkPIN() {
     if (enteredPIN.length === inputs.length) {
       if (enteredInt === correctPIN) {
         getFlag();
-      } else {
+      } 
+      else if (enteredInt === 6767) {
+        alert("Grow Up");
+      }
+      else if (enteredInt === 1337) {
+        alert("N1c3 7ry");
+      }
+      else if (enteredInt.toString().includes("67")) {
+        alert("Six Sev... NO! GROW UP");
+      }
+      else if (enteredInt === 1234) {
+        alert("Really? 1234?");
+      }
+      else {
         inputs.forEach(input => input.value = '');
         inputs[0].focus();
         document.querySelector('.WrongCode').textContent = "Wrong PIN, try again.";
