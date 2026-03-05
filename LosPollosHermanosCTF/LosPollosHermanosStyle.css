@@ -270,6 +270,52 @@ body {
         }
         .prices {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: left;
+        }
+        .price {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 5px;
+            padding: 5px;
+            width: 50px;
+            color: white;
+            height: 20px;
+        }
+        .pcs {
+            color: white;
+            font-size: 15px;
+        }
+        #LP {
+            background-color: blue;
+            border: 5px solid black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 97.5%;
+        }
+        #titleLP {
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 30px;
+            background-color: purple;
+            color: white;
+            border: 5px solid yellow;
+        }
+        .pricecont {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            }
+        #options {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            margin: 5px;
+            background-color: brown;
+            height: 108px;
         }
